@@ -66,6 +66,11 @@ services:
     # run this before running the docker container if you're use xauth `sudo xhost +local:docker`
     # volumes:
       # - /tmp/.X11-unix:/tmp/.X11-unix
+  challenge7:
+    build: ./7
+    ports:
+      - "8007:80"
+    restart: always
 
 networks:
   internal:

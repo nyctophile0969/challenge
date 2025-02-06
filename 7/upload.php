@@ -4,7 +4,6 @@
 <h3>Image File Upload Stats: </h3>
 
 <?php
-
 	if($_FILES["file"]["error"])
 	{
 		header("Location: index.html");

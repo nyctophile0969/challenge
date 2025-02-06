@@ -1,6 +1,6 @@
 FROM node:21 as deps
 WORKDIR /app
-COPY ./*.json .
+COPY ./*.json ./
 RUN npm install
 
 FROM node:21

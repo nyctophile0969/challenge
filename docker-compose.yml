@@ -1,0 +1,71 @@
+version: '3'
+
+services:
+  challenge1:
+    build: ./1
+    ports:
+      - "8001:80"
+    restart: always
+  challenge2:
+    build: ./2
+    ports:
+      - "8002:80"
+    restart: always
+  challenge3:
+    build: ./3
+    ports:
+      - "8003:80"
+    restart: always
+  challenge4:
+    build: ./4
+    ports:
+      - "8004:80"
+    restart: always
+  challenge5:
+    build: ./5
+    ports:
+      - "8005:80"
+    restart: always
+  # XSS Challenge
+  php:
+    build:
+      context: ./6/CTF-XSS-BOT/src  # Direktori yang berisi Dockerfile
+    networks:
+      - internal
+  proxy:
+    image: nginx:latest
+    restart: always
+    ports:
+      - 8006:80
+    volumes:
+      - ./6/CTF-XSS-BOT/src:/var/www/html:rw
+      - ./6/CTF-XSS-BOT/proxy.conf:/etc/nginx/conf.d/default.conf:ro
+    networks:
+      - internal
+    depends_on:
+      - php
+      - bot
+  bot:
+    build:
+      context: ./6/CTF-XSS-BOT/bot
+      args:
+        - BROWSER=chromium
+    restart: always
+    environment:
+      APPNAME: Admin
+      APPURL: http://proxy/
+      APPURLREGEX: ^http(|s)://.*$$
+      APPFLAG: AVC{3cbf792b-0cce-4e0e-889f-7f3b7ab8da28}
+      APPLIMIT: 2
+      APPLIMITTIME: 60
+      USE_PROXY: 1
+      DISPLAY: ${DISPLAY}
+    networks:
+      - internal
+    # uncoment this if you need to run the bot in GUI mode
+    # run this before running the docker container if you're use xauth `sudo xhost +local:docker`
+    # volumes:
+      # - /tmp/.X11-unix:/tmp/.X11-unix
+
+networks:
+  internal:

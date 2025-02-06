@@ -29,7 +29,7 @@ services:
   # XSS Challenge
   php:
     build:
-      context: ./6/CTF-XSS-BOT/src  # Direktori yang berisi Dockerfile
+      context: ./6/src  # Direktori yang berisi Dockerfile
     networks:
       - internal
   proxy:
@@ -38,8 +38,8 @@ services:
     ports:
       - 8006:80
     volumes:
-      - ./6/CTF-XSS-BOT/src:/var/www/html:rw
-      - ./6/CTF-XSS-BOT/proxy.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./6/src:/var/www/html:rw
+      - ./6/proxy.conf:/etc/nginx/conf.d/default.conf:ro
     networks:
       - internal
     depends_on:
@@ -47,7 +47,7 @@ services:
       - bot
   bot:
     build:
-      context: ./6/CTF-XSS-BOT/bot
+      context: ./6/bot
       args:
         - BROWSER=chromium
     restart: always

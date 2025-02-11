@@ -71,6 +71,11 @@ services:
     ports:
       - "8007:80"
     restart: always
+  challenge8:
+    build: ./8
+    ports:
+      - "8008:80"
+    restart: always
 
 networks:
   internal:

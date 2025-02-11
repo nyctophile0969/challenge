@@ -3,16 +3,26 @@ session_start();
 $database = new SQLite3('/database/notes.db');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    $username = trim($_POST['username']);
+    $password = $_POST['password'];
 
-    // Simpan user baru ke database
-    $query = $database->prepare("INSERT INTO users (username, password) VALUES (:username, :password)");
-    $query->bindValue(':username', $username, SQLITE3_TEXT);
-    $query->bindValue(':password', $password, SQLITE3_TEXT);
-    $query->execute();
+    // Cek apakah username sudah ada
+    $checkQuery = $database->prepare("SELECT COUNT(*) as count FROM users WHERE username = :username");
+    $checkQuery->bindValue(':username', $username, SQLITE3_TEXT);
+    $result = $checkQuery->execute()->fetchArray(SQLITE3_ASSOC);
 
-    echo "Registrasi berhasil! Silakan <a href='login.php'>login</a>.";
+    if ($result['count'] > 0) {
+        echo "<p style='color: red;'>Username sudah digunakan. Silakan pilih username lain.</p>";
+    } else {
+        // Simpan user baru ke database
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $query = $database->prepare("INSERT INTO users (username, password) VALUES (:username, :password)");
+        $query->bindValue(':username', $username, SQLITE3_TEXT);
+        $query->bindValue(':password', $hashedPassword, SQLITE3_TEXT);
+        $query->execute();
+
+        echo "Registrasi berhasil! Silakan <a href='login.php'>login</a>.";
+    }
 }
 ?>
 

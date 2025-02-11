@@ -2,7 +2,7 @@ from flask import Flask, request, render_template_string
 import random
 
 app = Flask(__name__)
-app.config['FLAG'] = 'CTF{SSTI_vuln_flag_2024}'
+app.config['FLAG'] = 'CTF{4b1f94f6-3496-4e4e-be25-1340d278c370}'
 
 # Array untuk random output
 quotes = [

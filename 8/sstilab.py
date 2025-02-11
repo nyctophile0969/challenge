@@ -77,7 +77,7 @@ def index():
         <body>
             <h1>Random Quote Generator</h1>
             <div class="quote">
-                kata kata gari ini bang '''+ name +''': ''' + random_quote + '''
+                kata kata hari ini bang '''+ name +''': ''' + random_quote + '''
             </div>
             <form method="GET">
                 <input type="text" name="name" placeholder="Masukin nama kamu">
